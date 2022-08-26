@@ -20,7 +20,11 @@ def icp_registration(source, target, max_corres_dist):
     result = o3d.pipelines.registration.registration_icp(source, target, max_corres_dist)
     print(result)
     print(result.transformation)
-    draw_registration_result(source, target, result.transformation, color=False)
+    #Save aligned cloud
+    source_temp = copy.deepcopy(source)
+    source_temp.transform(result.transformation)
+    o3d.io.write_point_cloud("cloudAligned.pcd", source_temp, write_ascii=True, compressed=False, print_progress=False)
+    draw_registration_result(source, target, result.transformation, color=True)
 
 
 def colored_icp_registration(source, target, voxel_size):
@@ -48,7 +52,11 @@ def colored_icp_registration(source, target, voxel_size):
         current_transformation = result.transformation
         print(result)
     print(current_transformation)
-    draw_registration_result(source, target, current_transformation, color=False)
+    #Save aligned cloud
+    source_temp = copy.deepcopy(source)
+    source_temp.transform(current_transformation)
+    o3d.io.write_point_cloud("cloudAligned_colorICP.pcd", source_temp, write_ascii=True, compressed=False, print_progress=False)
+    draw_registration_result(source, target, current_transformation, color=True)
 
 
 if __name__ == "__main__":
@@ -65,8 +73,20 @@ if __name__ == "__main__":
     #                         [0.487, 0.255, 0.835, -1.4], [0.0, 0.0, 0.0, 1.0]])
 
     # load point clouds
-    source = o3d.io.read_point_cloud("../data/cloud_bin_00_easy.pcd")
-    target = o3d.io.read_point_cloud("../data/cloud_bin_01.pcd")
+    #source = o3d.io.read_point_cloud("../data/cloud_bin_00_easy.pcd")
+    #target = o3d.io.read_point_cloud("../data/cloud_bin_01.pcd")
+
+    #Ok using icp_registration() method     case:  camera fixe,  object rotating over rotating base
+    #target = o3d.io.read_point_cloud("/home/lc/datasets/dataset_RsObjRot/select/posFilter/posPreAlign/0deg.pcd")
+    #source = o3d.io.read_point_cloud("/home/lc/datasets/dataset_RsObjRot/select/posFilter/posPreAlign/45degPreAligned.pcd")
+
+    #Ok using colored_icp_registration() method but too slow      case:  object fixe, camera moving
+    #target = o3d.io.read_point_cloud("/home/lc/datasets/dataset_RsMov/aSelect/filteredDepthInf1m/cloud_00064f.pcd")
+    #source = o3d.io.read_point_cloud("/home/lc/datasets/dataset_RsMov/aSelect/filteredDepthInf1m/cloud_00072f.pcd")
+
+    target = o3d.io.read_point_cloud("/home/lc/datasets/datasetRsMov2/aSelect/cloud_00088.pcd")
+    source = o3d.io.read_point_cloud("/home/lc/datasets/datasetRsMov2/aSelect/cloud_00112.pcd")
+
     # source = o3d.io.read_point_cloud("../data/frag_115.ply")
     # target = o3d.io.read_point_cloud("../data/frag_116.ply")
     print("Loaded " + str(len(source.points)) + " points for source point cloud")

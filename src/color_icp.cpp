@@ -86,6 +86,10 @@ ColorICP::ColorICP ()
   if (my::loadPointCloud<PointT> (tar_filename, *target_cloud_))
     std::cout << "[target] Loaded " << target_cloud_->size() << " points\n";
 
+  //Stock original cloud
+  pcl::PointCloud<PointT>::Ptr source_cloud0_ (new pcl::PointCloud<PointT>);
+  pcl::copyPointCloud(*source_cloud_, *source_cloud0_); 
+
   // pre-processing
   removeNaNPoints (source_cloud_);
   removeNaNPoints (target_cloud_);
@@ -109,6 +113,14 @@ ColorICP::ColorICP ()
   // visualization
   pcl::PointCloud<PointT>::Ptr source_cloud_transformed (new pcl::PointCloud<PointT>);
   pcl::transformPointCloud (*source_cloud_, *source_cloud_transformed, transformation_);
+
+  //SAVE CLOUD
+  //source_cloud_transformed is sampled
+  //pcl::io::savePCDFile("source_cloud_transformed.pcd", *source_cloud_transformed, false);
+  pcl::PointCloud<PointT>::Ptr source_cloud0_transformed (new pcl::PointCloud<PointT>);
+  pcl::transformPointCloud (*source_cloud0_, *source_cloud0_transformed, transformation_);
+  pcl::io::savePCDFile("source_cloud0_transformed.pcd", *source_cloud0_transformed, false);
+
   if (params_["color_visualization"].As<bool> ())
     visualizeRegistrationWithColor(source_cloud_transformed, target_cloud_);
   else

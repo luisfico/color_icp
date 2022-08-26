@@ -1,5 +1,9 @@
 # color_icp
 
+## NOTE
+
+See data test in /test/posPreAlign
+
 ## Introduction
 
 This repository serves as a learning material for ICP and Colored ICP algorithms. The code is well organized and clean. We aim to focus on only the main pipeline of the algorithm, and avoid complicated interfaces and nested templates as in large libraries such as PCL and Open3D. 

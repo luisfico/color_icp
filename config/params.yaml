@@ -1,8 +1,13 @@
 # Parameter List
-# source_cloud: "../data/cloud_bin_00_easy.pcd"
-# target_cloud: "../data/cloud_bin_01.pcd"
-source_cloud: "../data/frag_115.ply"
-target_cloud: "../data/frag_116.ply"
+#ko
+#source_cloud: "../data/cloud_bin_00_easy.pcd"
+#target_cloud: "../data/cloud_bin_01.pcd" 
+
+source_cloud: /home/lc/datasets/dataset_RsObjRot/select/posFilter/posPreAlign/45degPreAligned.pcd
+target_cloud: /home/lc/datasets/dataset_RsObjRot/select/posFilter/posPreAlign/0deg.pcd
+
+#source_cloud: "../data/frag_115.ply"
+#target_cloud: "../data/frag_116.ply"
 downsample: true
 estimate_normal: true
 voxel_resolution: 0.01
